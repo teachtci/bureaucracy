@@ -80,6 +80,33 @@
 </head>
 <body class="h-screen flex flex-col justify-between select-none overflow-hidden transition-colors duration-300">
 
+    <!-- Drawing Overlay Canvas -->
+    <canvas id="drawing-canvas" class="fixed inset-0 z-30 pointer-events-none"></canvas>
+
+    <!-- Drawing Toolbar -->
+    <div id="drawing-toolbar" class="hidden fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-zinc-900/90 backdrop-blur-md border border-white/15 px-4 py-2 rounded-2xl shadow-2xl flex items-center gap-3 text-white">
+        <div class="flex items-center gap-1.5" id="color-swatches">
+            <button data-color="#ffffff" class="draw-color w-6 h-6 rounded-full bg-white border-2 border-blue-500 cursor-pointer transition transform hover:scale-110" title="White"></button>
+            <button data-color="#ef4444" class="draw-color w-6 h-6 rounded-full bg-red-500 border-2 border-transparent cursor-pointer transition transform hover:scale-110" title="Red"></button>
+            <button data-color="#3b82f6" class="draw-color w-6 h-6 rounded-full bg-blue-500 border-2 border-transparent cursor-pointer transition transform hover:scale-110" title="Blue"></button>
+            <button data-color="#22c55e" class="draw-color w-6 h-6 rounded-full bg-green-500 border-2 border-transparent cursor-pointer transition transform hover:scale-110" title="Green"></button>
+            <button data-color="#eab308" class="draw-color w-6 h-6 rounded-full bg-yellow-500 border-2 border-transparent cursor-pointer transition transform hover:scale-110" title="Yellow"></button>
+            <button data-color="#a855f7" class="draw-color w-6 h-6 rounded-full bg-purple-500 border-2 border-transparent cursor-pointer transition transform hover:scale-110" title="Purple"></button>
+        </div>
+        <div class="h-5 w-px bg-zinc-700"></div>
+        <div class="flex items-center gap-1.5">
+            <button id="draw-eraser" class="px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs font-medium transition cursor-pointer">Eraser</button>
+            <select id="draw-size" class="bg-zinc-800 border border-zinc-700 rounded-lg px-2 py-1 text-xs text-white cursor-pointer focus:outline-none">
+                <option value="3">Thin</option>
+                <option value="6" selected>Medium</option>
+                <option value="12">Thick</option>
+            </select>
+        </div>
+        <div class="h-5 w-px bg-zinc-700"></div>
+        <button id="draw-clear" class="px-2.5 py-1 rounded-lg bg-red-600/80 hover:bg-red-500 text-xs font-semibold transition cursor-pointer">Clear</button>
+        <button id="draw-close" class="px-2.5 py-1 rounded-lg bg-zinc-700 hover:bg-zinc-600 text-xs font-semibold transition cursor-pointer">Done</button>
+    </div>
+
     <div class="flex-grow flex flex-col items-center justify-center relative p-4">
         
         <div id="clock-view" class="flex flex-col items-center transition-transform duration-300 bg-white/[0.03] border border-white/[0.08] backdrop-blur-xl px-12 py-9 rounded-3xl shadow-2xl">
@@ -600,6 +627,7 @@
     <!-- Floating Control Panel -->
     <div class="absolute right-5 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-50 bg-black/40 backdrop-blur-md p-2 rounded-xl border border-white/10 shadow-lg">
         <button id="btn-font" title="Cycle Font & Text Color" class="w-10 h-10 flex items-center justify-center bg-zinc-800/80 hover:bg-zinc-700 rounded-lg transition text-white font-bold text-sm cursor-pointer">Aa</button>
+        <button id="btn-draw" title="Draw on Dashboard" class="w-10 h-10 flex items-center justify-center bg-zinc-800/80 hover:bg-zinc-700 rounded-lg transition text-white cursor-pointer"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42"/></svg></button>
         <button id="btn-notes" title="Quick Notes" class="w-10 h-10 flex items-center justify-center bg-zinc-800/80 hover:bg-zinc-700 rounded-lg transition text-white cursor-pointer"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"/></svg></button>
         <button id="btn-heart" title="Favorite" class="w-10 h-10 flex items-center justify-center bg-zinc-800/80 hover:bg-zinc-700 rounded-lg transition text-white cursor-pointer"><svg id="heart-icon" class="w-5 h-5 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg></button>
         <button id="btn-fullscreen" title="Toggle Fullscreen" class="w-10 h-10 flex items-center justify-center bg-zinc-800/80 hover:bg-zinc-700 rounded-lg transition text-white cursor-pointer"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg></button>
@@ -813,6 +841,139 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            // --- Drawing Overlay Logic ---
+            const canvas = document.getElementById('drawing-canvas');
+            const ctx = canvas.getContext('2d');
+            const btnDraw = document.getElementById('btn-draw');
+            const drawToolbar = document.getElementById('drawing-toolbar');
+            const drawClear = document.getElementById('draw-clear');
+            const drawClose = document.getElementById('draw-close');
+            const drawEraser = document.getElementById('draw-eraser');
+            const drawSize = document.getElementById('draw-size');
+            const colorBtns = document.querySelectorAll('.draw-color');
+
+            let isDrawMode = false;
+            let isDrawing = false;
+            let isEraser = false;
+            let strokeColor = '#ffffff';
+            let strokeWidth = 6;
+
+            function resizeCanvas() {
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = canvas.width;
+                tempCanvas.height = canvas.height;
+                if (canvas.width > 0 && canvas.height > 0) {
+                    tempCanvas.getContext('2d').drawImage(canvas, 0, 0);
+                }
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                if (tempCanvas.width > 0 && tempCanvas.height > 0) {
+                    ctx.drawImage(tempCanvas, 0, 0);
+                }
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            function setDrawMode(active) {
+                isDrawMode = active;
+                if (isDrawMode) {
+                    canvas.classList.remove('pointer-events-none');
+                    canvas.classList.add('cursor-crosshair');
+                    drawToolbar.classList.remove('hidden');
+                    btnDraw.classList.add('bg-blue-600', 'hover:bg-blue-500');
+                    btnDraw.classList.remove('bg-zinc-800/80', 'hover:bg-zinc-700');
+                    showToast("Draw Mode On", "Click and drag anywhere to draw.");
+                } else {
+                    canvas.classList.add('pointer-events-none');
+                    canvas.classList.remove('cursor-crosshair');
+                    drawToolbar.classList.add('hidden');
+                    btnDraw.classList.remove('bg-blue-600', 'hover:bg-blue-500');
+                    btnDraw.classList.add('bg-zinc-800/80', 'hover:bg-zinc-700');
+                }
+            }
+
+            if (btnDraw) btnDraw.addEventListener('click', () => setDrawMode(!isDrawMode));
+            if (drawClose) drawClose.addEventListener('click', () => setDrawMode(false));
+
+            colorBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    isEraser = false;
+                    drawEraser.classList.remove('bg-blue-600');
+                    drawEraser.classList.add('bg-zinc-800');
+                    strokeColor = btn.getAttribute('data-color');
+                    colorBtns.forEach(b => b.classList.replace('border-blue-500', 'border-transparent'));
+                    btn.classList.replace('border-transparent', 'border-blue-500');
+                });
+            });
+
+            if (drawEraser) {
+                drawEraser.addEventListener('click', () => {
+                    isEraser = !isEraser;
+                    if (isEraser) {
+                        drawEraser.classList.replace('bg-zinc-800', 'bg-blue-600');
+                        colorBtns.forEach(b => b.classList.replace('border-blue-500', 'border-transparent'));
+                    } else {
+                        drawEraser.classList.replace('bg-blue-600', 'bg-zinc-800');
+                    }
+                });
+            }
+
+            if (drawSize) {
+                drawSize.addEventListener('change', (e) => {
+                    strokeWidth = parseInt(e.target.value, 10);
+                });
+            }
+
+            if (drawClear) {
+                drawClear.addEventListener('click', () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    showToast("Canvas Cleared", "All drawings erased.");
+                });
+            }
+
+            function getCoords(e) {
+                if (e.touches && e.touches.length > 0) {
+                    return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                }
+                return { x: e.clientX, y: e.clientY };
+            }
+
+            function startStroke(e) {
+                if (!isDrawMode) return;
+                isDrawing = true;
+                const { x, y } = getCoords(e);
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+            }
+
+            function moveStroke(e) {
+                if (!isDrawing || !isDrawMode) return;
+                if (e.cancelable) e.preventDefault();
+                const { x, y } = getCoords(e);
+                ctx.lineWidth = isEraser ? strokeWidth * 3 : strokeWidth;
+                ctx.globalCompositeOperation = isEraser ? 'destination-out' : 'source-over';
+                ctx.strokeStyle = strokeColor;
+                ctx.lineTo(x, y);
+                ctx.stroke();
+            }
+
+            function endStroke() {
+                if (!isDrawing) return;
+                isDrawing = false;
+                ctx.closePath();
+            }
+
+            canvas.addEventListener('mousedown', startStroke);
+            canvas.addEventListener('mousemove', moveStroke);
+            window.addEventListener('mouseup', endStroke);
+
+            canvas.addEventListener('touchstart', startStroke, { passive: false });
+            canvas.addEventListener('touchmove', moveStroke, { passive: false });
+            window.addEventListener('touchend', endStroke);
+
+            // --- Draggable Sections ---
             const sectionsContainer = document.getElementById('sections-container');
             let draggedSection = null;
             let placeholder = null;
