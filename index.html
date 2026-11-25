@@ -16,7 +16,7 @@
         .clock-glow {
             text-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
         }
-        .dh-btn, .ma-btn, .tq-btn, .mg-btn, .pp-btn, .tm-btn, .wz-btn, .sw-sec-btn, .ef-btn, .dt-btn, .sl-btn, .pl-btn, .m3d-btn, .ex-btn, .fl-btn, .ww-btn, .sm-btn, .bw-btn {
+        .dh-btn, .ma-btn, .tq-btn, .mg-btn, .pp-btn, .tm-btn, .wz-btn, .sw-sec-btn, .ef-btn, .dt-btn, .sl-btn, .pl-btn, .m3d-btn, .ex-btn, .fl-btn, .ww-btn, .sm-btn, .bw-btn, .cfi-btn, .ms-btn {
             width: 145px;
             flex-shrink: 0;
             border-radius: 0.75rem !important;
@@ -544,6 +544,52 @@
                             </div>
                         </div>
 
+                        <!-- CanFigureIt Section -->
+                        <div draggable="true" data-section-id="canfigureit" data-section-title="CanFigureIt" data-section-use="geometry proofs reasoning" class="draggable-section flex flex-col items-center w-full border border-sky-400/60 rounded-xl p-3 bg-sky-950/10">
+                            <div class="flex justify-between items-center w-full cursor-pointer section-toggle" data-target="canfigureit-content">
+                                <div class="flex items-center gap-2">
+                                    <span class="drag-handle cursor-grab active:cursor-grabbing text-sky-300/60 hover:text-sky-300" title="Drag to reorder">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
+                                    </span>
+                                    <h2 class="text-sm font-bold tracking-wider uppercase text-sky-300 flex items-center gap-2">CanFigureIt <span class="text-xs font-normal text-zinc-400 normal-case">(geometry proofs and reasoning)</span></h2>
+                                </div>
+                                <svg class="toggle-chevron w-4 h-4 text-sky-300 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            <div id="canfigureit-content" class="w-full flex flex-col transition-all duration-200">
+                                <hr class="w-full border-sky-400/30 my-2" />
+                                <div id="canfigureit-buttons-container" class="flex flex-wrap justify-center gap-2 w-full">
+                                    <script>
+                                        for(let i=1; i<=12; i++) {
+                                            document.write(`<button data-key="canfigureit${i}" class="cfi-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-sky-500 text-white hover:bg-sky-400 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-sky-100 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg><span>CanFigureIt ${i}</span></button>`);
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mathspace Section -->
+                        <div draggable="true" data-section-id="mathspace" data-section-title="Mathspace" data-section-use="online interactive math platform" class="draggable-section flex flex-col items-center w-full border border-emerald-400/60 rounded-xl p-3 bg-emerald-950/10">
+                            <div class="flex justify-between items-center w-full cursor-pointer section-toggle" data-target="mathspace-content">
+                                <div class="flex items-center gap-2">
+                                    <span class="drag-handle cursor-grab active:cursor-grabbing text-emerald-300/60 hover:text-emerald-300" title="Drag to reorder">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
+                                    </span>
+                                    <h2 class="text-sm font-bold tracking-wider uppercase text-emerald-300 flex items-center gap-2">Mathspace <span class="text-xs font-normal text-zinc-400 normal-case">(online interactive math platform)</span></h2>
+                                </div>
+                                <svg class="toggle-chevron w-4 h-4 text-emerald-300 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            <div id="mathspace-content" class="w-full flex flex-col transition-all duration-200">
+                                <hr class="w-full border-emerald-400/30 my-2" />
+                                <div id="mathspace-buttons-container" class="flex flex-wrap justify-center gap-2 w-full">
+                                    <script>
+                                        for(let i=1; i<=12; i++) {
+                                            document.write(`<button data-key="mathspace${i}" class="ms-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-emerald-500 text-white hover:bg-emerald-400 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-emerald-100 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/></svg><span>Mathspace ${i}</span></button>`);
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -657,7 +703,7 @@
 
     <script>
         const LINK_PRESETS = {};
-        const sectionsList = ['decimalhero', 'mathalley', 'thatquiz', 'mathigon', 'polypad', 'topmarks', 'wyzant', 'smartwork', 'edfinity', 'decktoys', 'splashlearn', 'plotly', 'math3d', 'excalidraw', 'flippity', 'wordwall', 'sagemath', 'bookwidgets'];
+        const sectionsList = ['decimalhero', 'mathalley', 'thatquiz', 'mathigon', 'polypad', 'topmarks', 'wyzant', 'smartwork', 'edfinity', 'decktoys', 'splashlearn', 'plotly', 'math3d', 'excalidraw', 'flippity', 'wordwall', 'sagemath', 'bookwidgets', 'canfigureit', 'mathspace'];
         sectionsList.forEach(sec => {
             for(let i=1; i<=12; i++) {
                 LINK_PRESETS[`${sec}${i}`] = { url: `https://${sec}${i}.com/`, label: `${sec.charAt(0).toUpperCase() + sec.slice(1)} ${i}` };
@@ -1230,7 +1276,7 @@
                 typing();
             }
 
-            document.querySelectorAll('.dh-btn, .ma-btn, .tq-btn, .mg-btn, .pp-btn, .tm-btn, .wz-btn, .sw-sec-btn, .ef-btn, .dt-btn, .sl-btn, .pl-btn, .m3d-btn, .ex-btn, .fl-btn, .ww-btn, .sm-btn, .bw-btn').forEach(btn => {
+            document.querySelectorAll('.dh-btn, .ma-btn, .tq-btn, .mg-btn, .pp-btn, .tm-btn, .wz-btn, .sw-sec-btn, .ef-btn, .dt-btn, .sl-btn, .pl-btn, .m3d-btn, .ex-btn, .fl-btn, .ww-btn, .sm-btn, .bw-btn, .cfi-btn, .ms-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const key = btn.getAttribute('data-key');
                     const urlInput = document.getElementById("url-target");
