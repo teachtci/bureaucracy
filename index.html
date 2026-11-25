@@ -16,14 +16,13 @@
         .clock-glow {
             text-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
         }
-        /* Ensure all section buttons are identical in size and have smooth rounded-xl corners */
-        .dh-btn, .ma-btn, .tq-btn, .mg-btn, .pp-btn, .tm-btn, .wz-btn {
+        .dh-btn, .ma-btn, .tq-btn, .mg-btn, .pp-btn, .tm-btn, .wz-btn, .sw-sec-btn, .ef-btn, .dt-btn, .sl-btn, .pl-btn, .m3d-btn, .ex-btn, .fl-btn, .ww-btn, .sm-btn, .bw-btn {
             width: 145px;
             flex-shrink: 0;
-            border-radius: 0.75rem !important; /* rounded-xl */
+            border-radius: 0.75rem !important;
         }
         .draggable-section {
-            transition: transform 0.15s ease, opacity 0.15s ease;
+            transition: transform 0.15s ease, opacity 0.15s ease, border-color 0.2s ease, background-color 0.2s ease;
         }
         .draggable-section.dragging {
             opacity: 0.4;
@@ -44,9 +43,13 @@
             pointer-events: none;
             transition: all 0.15s ease;
         }
+        .highlight-pulse {
+            border-color: rgba(59, 130, 246, 1) !important;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+            background-color: rgba(59, 130, 246, 0.15) !important;
+        }
     </style>
     <script>
-        // Automatic about:blank cloaking on any letter key press or mouse click (left/right)
         (function() {
             if (window.location.protocol !== 'about:' && !window.frameElement && !sessionStorage.getItem('is_cloaked')) {
                 const launchCloak = function(e) {
@@ -68,7 +71,6 @@
                         } catch (err) {}
                     }
                 };
-
                 window.addEventListener('keydown', launchCloak, { once: true });
                 window.addEventListener('click', launchCloak, { once: true });
                 window.addEventListener('contextmenu', launchCloak, { once: true });
@@ -78,10 +80,8 @@
 </head>
 <body class="h-screen flex flex-col justify-between select-none overflow-hidden transition-colors duration-300">
 
-    <!-- Main Display Area -->
     <div class="flex-grow flex flex-col items-center justify-center relative p-4">
         
-        <!-- Custom Local Clock View -->
         <div id="clock-view" class="flex flex-col items-center transition-transform duration-300 bg-white/[0.03] border border-white/[0.08] backdrop-blur-xl px-12 py-9 rounded-3xl shadow-2xl">
             <div class="flex items-baseline space-x-4">
                 <span id="time-main" class="text-7xl md:text-9xl font-extrabold tracking-tight clock-glow">12:00</span>
@@ -90,12 +90,10 @@
                     <span id="time-seconds" class="text-lg md:text-2xl font-medium opacity-60">00</span>
                 </div>
             </div>
-            <!-- Clickable Date Display -->
             <div id="date-display" class="mt-4 text-lg md:text-xl font-semibold tracking-widest uppercase opacity-75 cursor-pointer hover:text-blue-400 transition" title="Click to open Calendar">Loading Date...</div>
             <button id="toggle-stopwatch-mode" class="mt-4 text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded-md transition text-zinc-300 cursor-pointer">Switch to Stopwatch</button>
         </div>
 
-        <!-- Stopwatch View (Hidden by default) -->
         <div id="stopwatch-view" class="hidden flex-col items-center transition-transform duration-300 bg-white/[0.03] border border-white/[0.08] backdrop-blur-xl px-12 py-9 rounded-3xl shadow-2xl">
             <div class="flex items-baseline space-x-4">
                 <span id="sw-main" class="text-7xl md:text-9xl font-extrabold tracking-tight clock-glow">00:00</span>
@@ -108,231 +106,440 @@
             <button id="toggle-clock-mode" class="mt-4 text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded-md transition text-zinc-300 cursor-pointer">Back to Clock</button>
         </div>
 
-        <!-- Embedder View (Hidden by default) -->
         <div id="embedder-view" class="hidden flex-grow p-6 rounded-2xl overflow-auto max-w-2xl mx-auto mt-10 w-full z-10 bg-black/80 backdrop-blur-md border border-white/10 shadow-2xl text-white max-h-[85vh]">
             <div class="flex justify-between items-center mb-4">
                 <h1 class="text-3xl font-extrabold tracking-tight">embedder</h1>
                 <button id="back-to-clock" class="text-xs bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-lg transition font-bold cursor-pointer">Back to Dashboard</button>
             </div>
-            <div class="mt-4">
+            <div class="mt-4 flex flex-col gap-3">
                 <input id="url-target" type="text" placeholder="Enter URL here and press Enter..." class="flex h-10 w-full rounded-md border border-input bg-white px-3 py-2 text-sm text-black ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
                 
-                <!-- Action Buttons -->
-                <div class="flex flex-col py-2 mt-2 gap-4">
-                    <div class="flex gap-2">
-                        <button id="create-btn" class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-zinc-700 text-white hover:bg-zinc-600 h-10 px-4 py-2 transition cursor-pointer">Create Page</button>
-                        <button id="clear-btn" class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-zinc-800 text-white hover:bg-zinc-700 h-10 px-4 py-2 transition cursor-pointer">Clear Input</button>
+                <div class="flex flex-col py-2 gap-4">
+                    <div class="flex gap-2 items-center justify-between">
+                        <div class="flex gap-2">
+                            <button id="create-btn" class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-zinc-700 text-white hover:bg-zinc-600 h-10 px-4 py-2 transition cursor-pointer">Create Page</button>
+                            <button id="clear-btn" class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-zinc-800 text-white hover:bg-zinc-700 h-10 px-4 py-2 transition cursor-pointer">Clear Input</button>
+                        </div>
+                    </div>
+
+                    <!-- Search Bar positioned above DecimalHero and below the URL bar -->
+                    <div class="w-full">
+                        <input id="section-search-input" type="text" placeholder="Search sections by name or use (e.g. math, quizzes)..." class="flex h-9 w-full rounded-md border border-zinc-700 bg-zinc-900/90 px-3 py-1 text-xs text-white placeholder:text-zinc-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-500" />
                     </div>
 
                     <!-- Draggable Sections Container -->
                     <div id="sections-container" class="flex flex-col gap-4 w-full">
 
-                        <!-- DecimalHero Section (First Section) -->
-                        <div draggable="true" data-section-id="decimalhero" data-section-title="DecimalHero" class="draggable-section flex flex-col items-center w-full border border-purple-500/50 rounded-xl p-3 bg-purple-950/10">
+                        <!-- DecimalHero Section -->
+                        <div draggable="true" data-section-id="decimalhero" data-section-title="DecimalHero" data-section-use="math calculations decimals" class="draggable-section flex flex-col items-center w-full border border-purple-500/50 rounded-xl p-3 bg-purple-950/10">
                             <div class="flex justify-between items-center w-full cursor-pointer section-toggle" data-target="decimalhero-content">
                                 <div class="flex items-center gap-2">
                                     <span class="drag-handle cursor-grab active:cursor-grabbing text-purple-300/60 hover:text-purple-300" title="Drag to reorder">
                                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
                                     </span>
-                                    <h2 class="text-sm font-bold tracking-wider uppercase text-purple-300">DecimalHero</h2>
+                                    <h2 class="text-sm font-bold tracking-wider uppercase text-purple-300 flex items-center gap-2">DecimalHero <span class="text-xs font-normal text-zinc-400 normal-case">(math calculations)</span></h2>
                                 </div>
                                 <svg class="toggle-chevron w-4 h-4 text-purple-300 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                             </div>
                             <div id="decimalhero-content" class="w-full flex flex-col transition-all duration-200">
                                 <hr class="w-full border-purple-500/30 my-2" />
                                 <div id="decimalhero-buttons-container" class="flex flex-wrap justify-center gap-2 w-full">
-                                    <button data-key="decimalhero1" class="dh-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-purple-600 text-white hover:bg-purple-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-purple-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><span>DecimalHero 1</span></button>
-                                    <button data-key="decimalhero2" class="dh-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-purple-600 text-white hover:bg-purple-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-purple-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><span>DecimalHero 2</span></button>
-                                    <button data-key="decimalhero3" class="dh-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-purple-600 text-white hover:bg-purple-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-purple-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><span>DecimalHero 3</span></button>
-                                    <button data-key="decimalhero4" class="dh-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-purple-600 text-white hover:bg-purple-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-purple-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><span>DecimalHero 4</span></button>
-                                    <button data-key="decimalhero5" class="dh-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-purple-600 text-white hover:bg-purple-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-purple-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><span>DecimalHero 5</span></button>
-                                    <button data-key="decimalhero6" class="dh-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-purple-600 text-white hover:bg-purple-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-purple-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><span>DecimalHero 6</span></button>
-                                    <button data-key="decimalhero7" class="dh-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-purple-600 text-white hover:bg-purple-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-purple-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><span>DecimalHero 7</span></button>
-                                    <button data-key="decimalhero8" class="dh-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-purple-600 text-white hover:bg-purple-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-purple-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><span>DecimalHero 8</span></button>
-                                    <button data-key="decimalhero9" class="dh-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-purple-600 text-white hover:bg-purple-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-purple-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><span>DecimalHero 9</span></button>
-                                    <button data-key="decimalhero10" class="dh-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-purple-600 text-white hover:bg-purple-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-purple-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><span>DecimalHero 10</span></button>
-                                    <button data-key="decimalhero11" class="dh-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-purple-600 text-white hover:bg-purple-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-purple-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><span>DecimalHero 11</span></button>
-                                    <button data-key="decimalhero12" class="dh-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-purple-600 text-white hover:bg-purple-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-purple-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><span>DecimalHero 12</span></button>
+                                    <script>
+                                        for(let i=1; i<=12; i++) {
+                                            document.write(`<button data-key="decimalhero${i}" class="dh-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-purple-600 text-white hover:bg-purple-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-purple-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><span>DecimalHero ${i}</span></button>`);
+                                        }
+                                    </script>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Mathalley Section -->
-                        <div draggable="true" data-section-id="mathalley" data-section-title="Mathalley" class="draggable-section flex flex-col items-center w-full border border-orange-500/60 rounded-xl p-3 bg-orange-500/5">
+                        <div draggable="true" data-section-id="mathalley" data-section-title="Mathalley" data-section-use="arithmetic practice numbers" class="draggable-section flex flex-col items-center w-full border border-orange-500/60 rounded-xl p-3 bg-orange-500/5">
                             <div class="flex justify-between items-center w-full cursor-pointer section-toggle" data-target="mathalley-content">
                                 <div class="flex items-center gap-2">
                                     <span class="drag-handle cursor-grab active:cursor-grabbing text-orange-400/60 hover:text-orange-400" title="Drag to reorder">
                                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
                                     </span>
-                                    <h2 class="text-sm font-bold tracking-wider uppercase text-orange-400">Mathalley</h2>
+                                    <h2 class="text-sm font-bold tracking-wider uppercase text-orange-400 flex items-center gap-2">Mathalley <span class="text-xs font-normal text-zinc-400 normal-case">(arithmetic practice)</span></h2>
                                 </div>
                                 <svg class="toggle-chevron w-4 h-4 text-orange-400 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                             </div>
                             <div id="mathalley-content" class="w-full flex flex-col transition-all duration-200">
                                 <hr class="w-full border-orange-500/30 my-2" />
                                 <div id="mathalley-buttons-container" class="flex flex-wrap justify-center gap-2 w-full">
-                                    <button data-key="mathalley1" class="ma-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-orange-500 text-white hover:bg-orange-400 h-8 px-2 transition cursor-pointer gap-1 font-semibold shadow-[0_0_10px_rgba(249,115,22,0.3)]"><svg class="w-3.5 h-3.5 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span>Mathalley 1</span></button>
-                                    <button data-key="mathalley2" class="ma-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-orange-500 text-white hover:bg-orange-400 h-8 px-2 transition cursor-pointer gap-1 font-semibold shadow-[0_0_10px_rgba(249,115,22,0.3)]"><svg class="w-3.5 h-3.5 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span>Mathalley 2</span></button>
-                                    <button data-key="mathalley3" class="ma-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-orange-500 text-white hover:bg-orange-400 h-8 px-2 transition cursor-pointer gap-1 font-semibold shadow-[0_0_10px_rgba(249,115,22,0.3)]"><svg class="w-3.5 h-3.5 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span>Mathalley 3</span></button>
-                                    <button data-key="mathalley4" class="ma-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-orange-500 text-white hover:bg-orange-400 h-8 px-2 transition cursor-pointer gap-1 font-semibold shadow-[0_0_10px_rgba(249,115,22,0.3)]"><svg class="w-3.5 h-3.5 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span>Mathalley 4</span></button>
-                                    <button data-key="mathalley5" class="ma-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-orange-500 text-white hover:bg-orange-400 h-8 px-2 transition cursor-pointer gap-1 font-semibold shadow-[0_0_10px_rgba(249,115,22,0.3)]"><svg class="w-3.5 h-3.5 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span>Mathalley 5</span></button>
-                                    <button data-key="mathalley6" class="ma-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-orange-500 text-white hover:bg-orange-400 h-8 px-2 transition cursor-pointer gap-1 font-semibold shadow-[0_0_10px_rgba(249,115,22,0.3)]"><svg class="w-3.5 h-3.5 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span>Mathalley 6</span></button>
-                                    <button data-key="mathalley7" class="ma-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-orange-500 text-white hover:bg-orange-400 h-8 px-2 transition cursor-pointer gap-1 font-semibold shadow-[0_0_10px_rgba(249,115,22,0.3)]"><svg class="w-3.5 h-3.5 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span>Mathalley 7</span></button>
-                                    <button data-key="mathalley8" class="ma-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-orange-500 text-white hover:bg-orange-400 h-8 px-2 transition cursor-pointer gap-1 font-semibold shadow-[0_0_10px_rgba(249,115,22,0.3)]"><svg class="w-3.5 h-3.5 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span>Mathalley 8</span></button>
-                                    <button data-key="mathalley9" class="ma-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-orange-500 text-white hover:bg-orange-400 h-8 px-2 transition cursor-pointer gap-1 font-semibold shadow-[0_0_10px_rgba(249,115,22,0.3)]"><svg class="w-3.5 h-3.5 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span>Mathalley 9</span></button>
-                                    <button data-key="mathalley10" class="ma-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-orange-500 text-white hover:bg-orange-400 h-8 px-2 transition cursor-pointer gap-1 font-semibold shadow-[0_0_10px_rgba(249,115,22,0.3)]"><svg class="w-3.5 h-3.5 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span>Mathalley 10</span></button>
-                                    <button data-key="mathalley11" class="ma-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-orange-500 text-white hover:bg-orange-400 h-8 px-2 transition cursor-pointer gap-1 font-semibold shadow-[0_0_10px_rgba(249,115,22,0.3)]"><svg class="w-3.5 h-3.5 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span>Mathalley 11</span></button>
-                                    <button data-key="mathalley12" class="ma-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-orange-500 text-white hover:bg-orange-400 h-8 px-2 transition cursor-pointer gap-1 font-semibold shadow-[0_0_10px_rgba(249,115,22,0.3)]"><svg class="w-3.5 h-3.5 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span>Mathalley 12</span></button>
+                                    <script>
+                                        for(let i=1; i<=12; i++) {
+                                            document.write(`<button data-key="mathalley${i}" class="ma-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-orange-500 text-white hover:bg-orange-400 h-8 px-2 transition cursor-pointer gap-1 font-semibold"><svg class="w-3.5 h-3.5 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span>Mathalley ${i}</span></button>`);
+                                        }
+                                    </script>
                                 </div>
                             </div>
                         </div>
 
                         <!-- ThatQuiz Section -->
-                        <div draggable="true" data-section-id="thatquiz" data-section-title="ThatQuiz" class="draggable-section flex flex-col items-center w-full border border-pink-500/60 rounded-xl p-3 bg-pink-950/10">
+                        <div draggable="true" data-section-id="thatquiz" data-section-title="ThatQuiz" data-section-use="testing quizzes exams" class="draggable-section flex flex-col items-center w-full border border-pink-500/60 rounded-xl p-3 bg-pink-950/10">
                             <div class="flex justify-between items-center w-full cursor-pointer section-toggle" data-target="thatquiz-content">
                                 <div class="flex items-center gap-2">
                                     <span class="drag-handle cursor-grab active:cursor-grabbing text-pink-400/60 hover:text-pink-400" title="Drag to reorder">
                                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
                                     </span>
-                                    <h2 class="text-sm font-bold tracking-wider uppercase text-pink-400">ThatQuiz</h2>
+                                    <h2 class="text-sm font-bold tracking-wider uppercase text-pink-400 flex items-center gap-2">ThatQuiz <span class="text-xs font-normal text-zinc-400 normal-case">(online testing and quizzes)</span></h2>
                                 </div>
                                 <svg class="toggle-chevron w-4 h-4 text-pink-400 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                             </div>
                             <div id="thatquiz-content" class="w-full flex flex-col transition-all duration-200">
                                 <hr class="w-full border-pink-500/30 my-2" />
                                 <div id="thatquiz-buttons-container" class="flex flex-wrap justify-center gap-2 w-full">
-                                    <button data-key="thatquiz1" class="tq-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-pink-600 text-white hover:bg-pink-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(236,72,153,0.3)]"><svg class="w-3.5 h-3.5 text-pink-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg><span>ThatQuiz 1</span></button>
-                                    <button data-key="thatquiz2" class="tq-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-pink-600 text-white hover:bg-pink-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(236,72,153,0.3)]"><svg class="w-3.5 h-3.5 text-pink-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg><span>ThatQuiz 2</span></button>
-                                    <button data-key="thatquiz3" class="tq-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-pink-600 text-white hover:bg-pink-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(236,72,153,0.3)]"><svg class="w-3.5 h-3.5 text-pink-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg><span>ThatQuiz 3</span></button>
-                                    <button data-key="thatquiz4" class="tq-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-pink-600 text-white hover:bg-pink-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(236,72,153,0.3)]"><svg class="w-3.5 h-3.5 text-pink-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg><span>ThatQuiz 4</span></button>
-                                    <button data-key="thatquiz5" class="tq-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-pink-600 text-white hover:bg-pink-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(236,72,153,0.3)]"><svg class="w-3.5 h-3.5 text-pink-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg><span>ThatQuiz 5</span></button>
-                                    <button data-key="thatquiz6" class="tq-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-pink-600 text-white hover:bg-pink-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(236,72,153,0.3)]"><svg class="w-3.5 h-3.5 text-pink-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg><span>ThatQuiz 6</span></button>
-                                    <button data-key="thatquiz7" class="tq-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-pink-600 text-white hover:bg-pink-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(236,72,153,0.3)]"><svg class="w-3.5 h-3.5 text-pink-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg><span>ThatQuiz 7</span></button>
-                                    <button data-key="thatquiz8" class="tq-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-pink-600 text-white hover:bg-pink-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(236,72,153,0.3)]"><svg class="w-3.5 h-3.5 text-pink-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg><span>ThatQuiz 8</span></button>
-                                    <button data-key="thatquiz9" class="tq-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-pink-600 text-white hover:bg-pink-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(236,72,153,0.3)]"><svg class="w-3.5 h-3.5 text-pink-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg><span>ThatQuiz 9</span></button>
-                                    <button data-key="thatquiz10" class="tq-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-pink-600 text-white hover:bg-pink-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(236,72,153,0.3)]"><svg class="w-3.5 h-3.5 text-pink-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg><span>ThatQuiz 10</span></button>
-                                    <button data-key="thatquiz11" class="tq-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-pink-600 text-white hover:bg-pink-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(236,72,153,0.3)]"><svg class="w-3.5 h-3.5 text-pink-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg><span>ThatQuiz 11</span></button>
-                                    <button data-key="thatquiz12" class="tq-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-pink-600 text-white hover:bg-pink-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(236,72,153,0.3)]"><svg class="w-3.5 h-3.5 text-pink-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg><span>ThatQuiz 12</span></button>
+                                    <script>
+                                        for(let i=1; i<=12; i++) {
+                                            document.write(`<button data-key="thatquiz${i}" class="tq-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-pink-600 text-white hover:bg-pink-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-pink-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg><span>ThatQuiz ${i}</span></button>`);
+                                        }
+                                    </script>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Mathigon Section -->
-                        <div draggable="true" data-section-id="mathigon" data-section-title="Mathigon" class="draggable-section flex flex-col items-center w-full border border-teal-500/60 rounded-xl p-3 bg-teal-950/10">
+                        <div draggable="true" data-section-id="mathigon" data-section-title="Mathigon" data-section-use="geometry interactive learning textbooks" class="draggable-section flex flex-col items-center w-full border border-teal-500/60 rounded-xl p-3 bg-teal-950/10">
                             <div class="flex justify-between items-center w-full cursor-pointer section-toggle" data-target="mathigon-content">
                                 <div class="flex items-center gap-2">
                                     <span class="drag-handle cursor-grab active:cursor-grabbing text-teal-400/60 hover:text-teal-400" title="Drag to reorder">
                                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
                                     </span>
-                                    <h2 class="text-sm font-bold tracking-wider uppercase text-teal-400">Mathigon</h2>
+                                    <h2 class="text-sm font-bold tracking-wider uppercase text-teal-400 flex items-center gap-2">Mathigon <span class="text-xs font-normal text-zinc-400 normal-case">(interactive geometry textbook)</span></h2>
                                 </div>
                                 <svg class="toggle-chevron w-4 h-4 text-teal-400 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                             </div>
                             <div id="mathigon-content" class="w-full flex flex-col transition-all duration-200">
                                 <hr class="w-full border-teal-500/30 my-2" />
                                 <div id="mathigon-buttons-container" class="flex flex-wrap justify-center gap-2 w-full">
-                                    <button data-key="mathigon1" class="mg-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-teal-600 text-white hover:bg-teal-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(20,184,166,0.3)]"><svg class="w-3.5 h-3.5 text-teal-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg><span>Mathigon 1</span></button>
-                                    <button data-key="mathigon2" class="mg-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-teal-600 text-white hover:bg-teal-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(20,184,166,0.3)]"><svg class="w-3.5 h-3.5 text-teal-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg><span>Mathigon 2</span></button>
-                                    <button data-key="mathigon3" class="mg-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-teal-600 text-white hover:bg-teal-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(20,184,166,0.3)]"><svg class="w-3.5 h-3.5 text-teal-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg><span>Mathigon 3</span></button>
-                                    <button data-key="mathigon4" class="mg-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-teal-600 text-white hover:bg-teal-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(20,184,166,0.3)]"><svg class="w-3.5 h-3.5 text-teal-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg><span>Mathigon 4</span></button>
-                                    <button data-key="mathigon5" class="mg-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-teal-600 text-white hover:bg-teal-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(20,184,166,0.3)]"><svg class="w-3.5 h-3.5 text-teal-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg><span>Mathigon 5</span></button>
-                                    <button data-key="mathigon6" class="mg-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-teal-600 text-white hover:bg-teal-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(20,184,166,0.3)]"><svg class="w-3.5 h-3.5 text-teal-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg><span>Mathigon 6</span></button>
-                                    <button data-key="mathigon7" class="mg-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-teal-600 text-white hover:bg-teal-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(20,184,166,0.3)]"><svg class="w-3.5 h-3.5 text-teal-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg><span>Mathigon 7</span></button>
-                                    <button data-key="mathigon8" class="mg-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-teal-600 text-white hover:bg-teal-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(20,184,166,0.3)]"><svg class="w-3.5 h-3.5 text-teal-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg><span>Mathigon 8</span></button>
-                                    <button data-key="mathigon9" class="mg-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-teal-600 text-white hover:bg-teal-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(20,184,166,0.3)]"><svg class="w-3.5 h-3.5 text-teal-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg><span>Mathigon 9</span></button>
-                                    <button data-key="mathigon10" class="mg-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-teal-600 text-white hover:bg-teal-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(20,184,166,0.3)]"><svg class="w-3.5 h-3.5 text-teal-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg><span>Mathigon 10</span></button>
-                                    <button data-key="mathigon11" class="mg-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-teal-600 text-white hover:bg-teal-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(20,184,166,0.3)]"><svg class="w-3.5 h-3.5 text-teal-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg><span>Mathigon 11</span></button>
-                                    <button data-key="mathigon12" class="mg-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-teal-600 text-white hover:bg-teal-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(20,184,166,0.3)]"><svg class="w-3.5 h-3.5 text-teal-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg><span>Mathigon 12</span></button>
+                                    <script>
+                                        for(let i=1; i<=12; i++) {
+                                            document.write(`<button data-key="mathigon${i}" class="mg-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-teal-600 text-white hover:bg-teal-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-teal-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg><span>Mathigon ${i}</span></button>`);
+                                        }
+                                    </script>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Polypad Section -->
-                        <div draggable="true" data-section-id="polypad" data-section-title="Polypad" class="draggable-section flex flex-col items-center w-full border border-indigo-500/60 rounded-xl p-3 bg-indigo-950/10">
+                        <div draggable="true" data-section-id="polypad" data-section-title="Polypad" data-section-use="visual manipulatives workspace" class="draggable-section flex flex-col items-center w-full border border-indigo-500/60 rounded-xl p-3 bg-indigo-950/10">
                             <div class="flex justify-between items-center w-full cursor-pointer section-toggle" data-target="polypad-content">
                                 <div class="flex items-center gap-2">
                                     <span class="drag-handle cursor-grab active:cursor-grabbing text-indigo-400/60 hover:text-indigo-400" title="Drag to reorder">
                                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
                                     </span>
-                                    <h2 class="text-sm font-bold tracking-wider uppercase text-indigo-400">Polypad</h2>
+                                    <h2 class="text-sm font-bold tracking-wider uppercase text-indigo-400 flex items-center gap-2">Polypad <span class="text-xs font-normal text-zinc-400 normal-case">(visual manipulatives workspace)</span></h2>
                                 </div>
                                 <svg class="toggle-chevron w-4 h-4 text-indigo-400 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                             </div>
                             <div id="polypad-content" class="w-full flex flex-col transition-all duration-200">
                                 <hr class="w-full border-indigo-500/30 my-2" />
                                 <div id="polypad-buttons-container" class="flex flex-wrap justify-center gap-2 w-full">
-                                    <button data-key="polypad1" class="pp-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-indigo-600 text-white hover:bg-indigo-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(99,102,241,0.3)]"><svg class="w-3.5 h-3.5 text-indigo-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg><span>Polypad 1</span></button>
-                                    <button data-key="polypad2" class="pp-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-indigo-600 text-white hover:bg-indigo-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(99,102,241,0.3)]"><svg class="w-3.5 h-3.5 text-indigo-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg><span>Polypad 2</span></button>
-                                    <button data-key="polypad3" class="pp-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-indigo-600 text-white hover:bg-indigo-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(99,102,241,0.3)]"><svg class="w-3.5 h-3.5 text-indigo-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg><span>Polypad 3</span></button>
-                                    <button data-key="polypad4" class="pp-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-indigo-600 text-white hover:bg-indigo-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(99,102,241,0.3)]"><svg class="w-3.5 h-3.5 text-indigo-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg><span>Polypad 4</span></button>
-                                    <button data-key="polypad5" class="pp-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-indigo-600 text-white hover:bg-indigo-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(99,102,241,0.3)]"><svg class="w-3.5 h-3.5 text-indigo-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg><span>Polypad 5</span></button>
-                                    <button data-key="polypad6" class="pp-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-indigo-600 text-white hover:bg-indigo-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(99,102,241,0.3)]"><svg class="w-3.5 h-3.5 text-indigo-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg><span>Polypad 6</span></button>
-                                    <button data-key="polypad7" class="pp-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-indigo-600 text-white hover:bg-indigo-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(99,102,241,0.3)]"><svg class="w-3.5 h-3.5 text-indigo-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg><span>Polypad 7</span></button>
-                                    <button data-key="polypad8" class="pp-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-indigo-600 text-white hover:bg-indigo-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(99,102,241,0.3)]"><svg class="w-3.5 h-3.5 text-indigo-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg><span>Polypad 8</span></button>
-                                    <button data-key="polypad9" class="pp-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-indigo-600 text-white hover:bg-indigo-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(99,102,241,0.3)]"><svg class="w-3.5 h-3.5 text-indigo-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg><span>Polypad 9</span></button>
-                                    <button data-key="polypad10" class="pp-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-indigo-600 text-white hover:bg-indigo-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(99,102,241,0.3)]"><svg class="w-3.5 h-3.5 text-indigo-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg><span>Polypad 10</span></button>
-                                    <button data-key="polypad11" class="pp-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-indigo-600 text-white hover:bg-indigo-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(99,102,241,0.3)]"><svg class="w-3.5 h-3.5 text-indigo-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg><span>Polypad 11</span></button>
-                                    <button data-key="polypad12" class="pp-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-indigo-600 text-white hover:bg-indigo-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(99,102,241,0.3)]"><svg class="w-3.5 h-3.5 text-indigo-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg><span>Polypad 12</span></button>
+                                    <script>
+                                        for(let i=1; i<=12; i++) {
+                                            document.write(`<button data-key="polypad${i}" class="pp-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-indigo-600 text-white hover:bg-indigo-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-indigo-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg><span>Polypad ${i}</span></button>`);
+                                        }
+                                    </script>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Topmarks Section -->
-                        <div draggable="true" data-section-id="topmarks" data-section-title="Topmarks" class="draggable-section flex flex-col items-center w-full border border-sky-500/60 rounded-xl p-3 bg-sky-950/10">
+                        <div draggable="true" data-section-id="topmarks" data-section-title="Topmarks" data-section-use="educational games resources" class="draggable-section flex flex-col items-center w-full border border-sky-500/60 rounded-xl p-3 bg-sky-950/10">
                             <div class="flex justify-between items-center w-full cursor-pointer section-toggle" data-target="topmarks-content">
                                 <div class="flex items-center gap-2">
                                     <span class="drag-handle cursor-grab active:cursor-grabbing text-sky-400/60 hover:text-sky-400" title="Drag to reorder">
                                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
                                     </span>
-                                    <h2 class="text-sm font-bold tracking-wider uppercase text-sky-400">Topmarks</h2>
+                                    <h2 class="text-sm font-bold tracking-wider uppercase text-sky-400 flex items-center gap-2">Topmarks <span class="text-xs font-normal text-zinc-400 normal-case">(educational web games)</span></h2>
                                 </div>
                                 <svg class="toggle-chevron w-4 h-4 text-sky-400 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                             </div>
                             <div id="topmarks-content" class="w-full flex flex-col transition-all duration-200">
                                 <hr class="w-full border-sky-500/30 my-2" />
                                 <div id="topmarks-buttons-container" class="flex flex-wrap justify-center gap-2 w-full">
-                                    <button data-key="topmarks1" class="tm-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-sky-600 text-white hover:bg-sky-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(14,165,233,0.3)]"><svg class="w-3.5 h-3.5 text-sky-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg><span>Topmarks 1</span></button>
-                                    <button data-key="topmarks2" class="tm-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-sky-600 text-white hover:bg-sky-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(14,165,233,0.3)]"><svg class="w-3.5 h-3.5 text-sky-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg><span>Topmarks 2</span></button>
-                                    <button data-key="topmarks3" class="tm-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-sky-600 text-white hover:bg-sky-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(14,165,233,0.3)]"><svg class="w-3.5 h-3.5 text-sky-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg><span>Topmarks 3</span></button>
-                                    <button data-key="topmarks4" class="tm-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-sky-600 text-white hover:bg-sky-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(14,165,233,0.3)]"><svg class="w-3.5 h-3.5 text-sky-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg><span>Topmarks 4</span></button>
-                                    <button data-key="topmarks5" class="tm-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-sky-600 text-white hover:bg-sky-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(14,165,233,0.3)]"><svg class="w-3.5 h-3.5 text-sky-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg><span>Topmarks 5</span></button>
-                                    <button data-key="topmarks6" class="tm-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-sky-600 text-white hover:bg-sky-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(14,165,233,0.3)]"><svg class="w-3.5 h-3.5 text-sky-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg><span>Topmarks 6</span></button>
-                                    <button data-key="topmarks7" class="tm-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-sky-600 text-white hover:bg-sky-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(14,165,233,0.3)]"><svg class="w-3.5 h-3.5 text-sky-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg><span>Topmarks 7</span></button>
-                                    <button data-key="topmarks8" class="tm-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-sky-600 text-white hover:bg-sky-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(14,165,233,0.3)]"><svg class="w-3.5 h-3.5 text-sky-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg><span>Topmarks 8</span></button>
-                                    <button data-key="topmarks9" class="tm-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-sky-600 text-white hover:bg-sky-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(14,165,233,0.3)]"><svg class="w-3.5 h-3.5 text-sky-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg><span>Topmarks 9</span></button>
-                                    <button data-key="topmarks10" class="tm-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-sky-600 text-white hover:bg-sky-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(14,165,233,0.3)]"><svg class="w-3.5 h-3.5 text-sky-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg><span>Topmarks 10</span></button>
-                                    <button data-key="topmarks11" class="tm-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-sky-600 text-white hover:bg-sky-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(14,165,233,0.3)]"><svg class="w-3.5 h-3.5 text-sky-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg><span>Topmarks 11</span></button>
-                                    <button data-key="topmarks12" class="tm-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-sky-600 text-white hover:bg-sky-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(14,165,233,0.3)]"><svg class="w-3.5 h-3.5 text-sky-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg><span>Topmarks 12</span></button>
+                                    <script>
+                                        for(let i=1; i<=12; i++) {
+                                            document.write(`<button data-key="topmarks${i}" class="tm-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-sky-600 text-white hover:bg-sky-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-sky-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg><span>Topmarks ${i}</span></button>`);
+                                        }
+                                    </script>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Wyzant Section -->
-                        <div draggable="true" data-section-id="wyzant" data-section-title="Wyzant" class="draggable-section flex flex-col items-center w-full border border-emerald-500/60 rounded-xl p-3 bg-emerald-950/10">
+                        <div draggable="true" data-section-id="wyzant" data-section-title="Wyzant" data-section-use="tutoring study guides formulas" class="draggable-section flex flex-col items-center w-full border border-emerald-500/60 rounded-xl p-3 bg-emerald-950/10">
                             <div class="flex justify-between items-center w-full cursor-pointer section-toggle" data-target="wyzant-content">
                                 <div class="flex items-center gap-2">
                                     <span class="drag-handle cursor-grab active:cursor-grabbing text-emerald-400/60 hover:text-emerald-400" title="Drag to reorder">
                                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
                                     </span>
-                                    <h2 class="text-sm font-bold tracking-wider uppercase text-emerald-400">Wyzant</h2>
+                                    <h2 class="text-sm font-bold tracking-wider uppercase text-emerald-400 flex items-center gap-2">Wyzant <span class="text-xs font-normal text-zinc-400 normal-case">(tutoring formulas and guides)</span></h2>
                                 </div>
                                 <svg class="toggle-chevron w-4 h-4 text-emerald-400 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                             </div>
                             <div id="wyzant-content" class="w-full flex flex-col transition-all duration-200">
                                 <hr class="w-full border-emerald-500/30 my-2" />
                                 <div id="wyzant-buttons-container" class="flex flex-wrap justify-center gap-2 w-full">
-                                    <button data-key="wyzant1" class="wz-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-emerald-600 text-white hover:bg-emerald-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(16,185,129,0.3)]"><svg class="w-3.5 h-3.5 text-emerald-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><span>Wyzant 1</span></button>
-                                    <button data-key="wyzant2" class="wz-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-emerald-600 text-white hover:bg-emerald-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(16,185,129,0.3)]"><svg class="w-3.5 h-3.5 text-emerald-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><span>Wyzant 2</span></button>
-                                    <button data-key="wyzant3" class="wz-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-emerald-600 text-white hover:bg-emerald-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(16,185,129,0.3)]"><svg class="w-3.5 h-3.5 text-emerald-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><span>Wyzant 3</span></button>
-                                    <button data-key="wyzant4" class="wz-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-emerald-600 text-white hover:bg-emerald-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(16,185,129,0.3)]"><svg class="w-3.5 h-3.5 text-emerald-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><span>Wyzant 4</span></button>
-                                    <button data-key="wyzant5" class="wz-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-emerald-600 text-white hover:bg-emerald-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(16,185,129,0.3)]"><svg class="w-3.5 h-3.5 text-emerald-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><span>Wyzant 5</span></button>
-                                    <button data-key="wyzant6" class="wz-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-emerald-600 text-white hover:bg-emerald-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(16,185,129,0.3)]"><svg class="w-3.5 h-3.5 text-emerald-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><span>Wyzant 6</span></button>
-                                    <button data-key="wyzant7" class="wz-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-emerald-600 text-white hover:bg-emerald-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(16,185,129,0.3)]"><svg class="w-3.5 h-3.5 text-emerald-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><span>Wyzant 7</span></button>
-                                    <button data-key="wyzant8" class="wz-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-emerald-600 text-white hover:bg-emerald-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(16,185,129,0.3)]"><svg class="w-3.5 h-3.5 text-emerald-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><span>Wyzant 8</span></button>
-                                    <button data-key="wyzant9" class="wz-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-emerald-600 text-white hover:bg-emerald-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(16,185,129,0.3)]"><svg class="w-3.5 h-3.5 text-emerald-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><span>Wyzant 9</span></button>
-                                    <button data-key="wyzant10" class="wz-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-emerald-600 text-white hover:bg-emerald-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(16,185,129,0.3)]"><svg class="w-3.5 h-3.5 text-emerald-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><span>Wyzant 10</span></button>
-                                    <button data-key="wyzant11" class="wz-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-emerald-600 text-white hover:bg-emerald-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(16,185,129,0.3)]"><svg class="w-3.5 h-3.5 text-emerald-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><span>Wyzant 11</span></button>
-                                    <button data-key="wyzant12" class="wz-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-emerald-600 text-white hover:bg-emerald-500 h-8 px-2 transition cursor-pointer gap-1 shadow-[0_0_10px_rgba(16,185,129,0.3)]"><svg class="w-3.5 h-3.5 text-emerald-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><span>Wyzant 12</span></button>
+                                    <script>
+                                        for(let i=1; i<=12; i++) {
+                                            document.write(`<button data-key="wyzant${i}" class="wz-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-emerald-600 text-white hover:bg-emerald-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-emerald-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><span>Wyzant ${i}</span></button>`);
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Smartwork Section -->
+                        <div draggable="true" data-section-id="smartwork" data-section-title="Smartwork" data-section-use="homework problem sets" class="draggable-section flex flex-col items-center w-full border border-violet-500/60 rounded-xl p-3 bg-violet-950/10">
+                            <div class="flex justify-between items-center w-full cursor-pointer section-toggle" data-target="smartwork-content">
+                                <div class="flex items-center gap-2">
+                                    <span class="drag-handle cursor-grab active:cursor-grabbing text-violet-400/60 hover:text-violet-400" title="Drag to reorder">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
+                                    </span>
+                                    <h2 class="text-sm font-bold tracking-wider uppercase text-violet-400 flex items-center gap-2">Smartwork <span class="text-xs font-normal text-zinc-400 normal-case">(online homework portal)</span></h2>
+                                </div>
+                                <svg class="toggle-chevron w-4 h-4 text-violet-400 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            <div id="smartwork-content" class="w-full flex flex-col transition-all duration-200">
+                                <hr class="w-full border-violet-500/30 my-2" />
+                                <div id="smartwork-buttons-container" class="flex flex-wrap justify-center gap-2 w-full">
+                                    <script>
+                                        for(let i=1; i<=12; i++) {
+                                            document.write(`<button data-key="smartwork${i}" class="sw-sec-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-violet-600 text-white hover:bg-violet-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-violet-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg><span>Smartwork ${i}</span></button>`);
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Edfinity Section -->
+                        <div draggable="true" data-section-id="edfinity" data-section-title="Edfinity" data-section-use="stem homework assessments" class="draggable-section flex flex-col items-center w-full border border-cyan-500/60 rounded-xl p-3 bg-cyan-950/10">
+                            <div class="flex justify-between items-center w-full cursor-pointer section-toggle" data-target="edfinity-content">
+                                <div class="flex items-center gap-2">
+                                    <span class="drag-handle cursor-grab active:cursor-grabbing text-cyan-400/60 hover:text-cyan-400" title="Drag to reorder">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
+                                    </span>
+                                    <h2 class="text-sm font-bold tracking-wider uppercase text-cyan-400 flex items-center gap-2">Edfinity <span class="text-xs font-normal text-zinc-400 normal-case">(STEM course assignments)</span></h2>
+                                </div>
+                                <svg class="toggle-chevron w-4 h-4 text-cyan-400 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            <div id="edfinity-content" class="w-full flex flex-col transition-all duration-200">
+                                <hr class="w-full border-cyan-500/30 my-2" />
+                                <div id="edfinity-buttons-container" class="flex flex-wrap justify-center gap-2 w-full">
+                                    <script>
+                                        for(let i=1; i<=12; i++) {
+                                            document.write(`<button data-key="edfinity${i}" class="ef-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-cyan-600 text-white hover:bg-cyan-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-cyan-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span>Edfinity ${i}</span></button>`);
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- DeckToys Section -->
+                        <div draggable="true" data-section-id="decktoys" data-section-title="DeckToys" data-section-use="learning paths gamification" class="draggable-section flex flex-col items-center w-full border border-amber-500/60 rounded-xl p-3 bg-amber-950/10">
+                            <div class="flex justify-between items-center w-full cursor-pointer section-toggle" data-target="decktoys-content">
+                                <div class="flex items-center gap-2">
+                                    <span class="drag-handle cursor-grab active:cursor-grabbing text-amber-400/60 hover:text-amber-400" title="Drag to reorder">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
+                                    </span>
+                                    <h2 class="text-sm font-bold tracking-wider uppercase text-amber-400 flex items-center gap-2">DeckToys <span class="text-xs font-normal text-zinc-400 normal-case">(gamified learning paths)</span></h2>
+                                </div>
+                                <svg class="toggle-chevron w-4 h-4 text-amber-400 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            <div id="decktoys-content" class="w-full flex flex-col transition-all duration-200">
+                                <hr class="w-full border-amber-500/30 my-2" />
+                                <div id="decktoys-buttons-container" class="flex flex-wrap justify-center gap-2 w-full">
+                                    <script>
+                                        for(let i=1; i<=12; i++) {
+                                            document.write(`<button data-key="decktoys${i}" class="dt-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-amber-600 text-white hover:bg-amber-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-amber-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span>DeckToys ${i}</span></button>`);
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SplashLearn Section -->
+                        <div draggable="true" data-section-id="splashlearn" data-section-title="SplashLearn" data-section-use="math reading games kids" class="draggable-section flex flex-col items-center w-full border border-lime-500/60 rounded-xl p-3 bg-lime-950/10">
+                            <div class="flex justify-between items-center w-full cursor-pointer section-toggle" data-target="splashlearn-content">
+                                <div class="flex items-center gap-2">
+                                    <span class="drag-handle cursor-grab active:cursor-grabbing text-lime-400/60 hover:text-lime-400" title="Drag to reorder">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
+                                    </span>
+                                    <h2 class="text-sm font-bold tracking-wider uppercase text-lime-400 flex items-center gap-2">SplashLearn <span class="text-xs font-normal text-zinc-400 normal-case">(fun math and reading games)</span></h2>
+                                </div>
+                                <svg class="toggle-chevron w-4 h-4 text-lime-400 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            <div id="splashlearn-content" class="w-full flex flex-col transition-all duration-200">
+                                <hr class="w-full border-lime-500/30 my-2" />
+                                <div id="splashlearn-buttons-container" class="flex flex-wrap justify-center gap-2 w-full">
+                                    <script>
+                                        for(let i=1; i<=12; i++) {
+                                            document.write(`<button data-key="splashlearn${i}" class="sl-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-lime-600 text-white hover:bg-lime-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-lime-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span>SplashLearn ${i}</span></button>`);
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Plotly Section -->
+                        <div draggable="true" data-section-id="plotly" data-section-title="Plotly" data-section-use="data visualization graphing" class="draggable-section flex flex-col items-center w-full border border-blue-500/60 rounded-xl p-3 bg-blue-950/10">
+                            <div class="flex justify-between items-center w-full cursor-pointer section-toggle" data-target="plotly-content">
+                                <div class="flex items-center gap-2">
+                                    <span class="drag-handle cursor-grab active:cursor-grabbing text-blue-400/60 hover:text-blue-400" title="Drag to reorder">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
+                                    </span>
+                                    <h2 class="text-sm font-bold tracking-wider uppercase text-blue-400 flex items-center gap-2">Plotly <span class="text-xs font-normal text-zinc-400 normal-case">(data visualization and graphs)</span></h2>
+                                </div>
+                                <svg class="toggle-chevron w-4 h-4 text-blue-400 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            <div id="plotly-content" class="w-full flex flex-col transition-all duration-200">
+                                <hr class="w-full border-blue-500/30 my-2" />
+                                <div id="plotly-buttons-container" class="flex flex-wrap justify-center gap-2 w-full">
+                                    <script>
+                                        for(let i=1; i<=12; i++) {
+                                            document.write(`<button data-key="plotly${i}" class="pl-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-blue-600 text-white hover:bg-blue-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-blue-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg><span>Plotly ${i}</span></button>`);
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Math3D Section -->
+                        <div draggable="true" data-section-id="math3d" data-section-title="Math3D" data-section-use="three dimensional graphing" class="draggable-section flex flex-col items-center w-full border border-fuchsia-500/60 rounded-xl p-3 bg-fuchsia-950/10">
+                            <div class="flex justify-between items-center w-full cursor-pointer section-toggle" data-target="math3d-content">
+                                <div class="flex items-center gap-2">
+                                    <span class="drag-handle cursor-grab active:cursor-grabbing text-fuchsia-400/60 hover:text-fuchsia-400" title="Drag to reorder">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
+                                    </span>
+                                    <h2 class="text-sm font-bold tracking-wider uppercase text-fuchsia-400 flex items-center gap-2">Math3D <span class="text-xs font-normal text-zinc-400 normal-case">(three-dimensional plotting)</span></h2>
+                                </div>
+                                <svg class="toggle-chevron w-4 h-4 text-fuchsia-400 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            <div id="math3d-content" class="w-full flex flex-col transition-all duration-200">
+                                <hr class="w-full border-fuchsia-500/30 my-2" />
+                                <div id="math3d-buttons-container" class="flex flex-wrap justify-center gap-2 w-full">
+                                    <script>
+                                        for(let i=1; i<=12; i++) {
+                                            document.write(`<button data-key="math3d${i}" class="m3d-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-fuchsia-600 text-white hover:bg-fuchsia-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-fuchsia-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg><span>Math3D ${i}</span></button>`);
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Excalidraw Section -->
+                        <div draggable="true" data-section-id="excalidraw" data-section-title="Excalidraw" data-section-use="sketching whiteboarding brainstorming" class="draggable-section flex flex-col items-center w-full border border-yellow-500/60 rounded-xl p-3 bg-yellow-950/10">
+                            <div class="flex justify-between items-center w-full cursor-pointer section-toggle" data-target="excalidraw-content">
+                                <div class="flex items-center gap-2">
+                                    <span class="drag-handle cursor-grab active:cursor-grabbing text-yellow-400/60 hover:text-yellow-400" title="Drag to reorder">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
+                                    </span>
+                                    <h2 class="text-sm font-bold tracking-wider uppercase text-yellow-400 flex items-center gap-2">Excalidraw <span class="text-xs font-normal text-zinc-400 normal-case">(virtual whiteboarding)</span></h2>
+                                </div>
+                                <svg class="toggle-chevron w-4 h-4 text-yellow-400 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            <div id="excalidraw-content" class="w-full flex flex-col transition-all duration-200">
+                                <hr class="w-full border-yellow-500/30 my-2" />
+                                <div id="excalidraw-buttons-container" class="flex flex-wrap justify-center gap-2 w-full">
+                                    <script>
+                                        for(let i=1; i<=12; i++) {
+                                            document.write(`<button data-key="excalidraw${i}" class="ex-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-yellow-600 text-white hover:bg-yellow-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-yellow-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg><span>Excalidraw ${i}</span></button>`);
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Flippity Section -->
+                        <div draggable="true" data-section-id="flippity" data-section-title="Flippity" data-section-use="flashcards randomizers trivia" class="draggable-section flex flex-col items-center w-full border border-orange-400/60 rounded-xl p-3 bg-orange-950/10">
+                            <div class="flex justify-between items-center w-full cursor-pointer section-toggle" data-target="flippity-content">
+                                <div class="flex items-center gap-2">
+                                    <span class="drag-handle cursor-grab active:cursor-grabbing text-orange-300/60 hover:text-orange-300" title="Drag to reorder">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
+                                    </span>
+                                    <h2 class="text-sm font-bold tracking-wider uppercase text-orange-300 flex items-center gap-2">Flippity <span class="text-xs font-normal text-zinc-400 normal-case">(flashcards and randomizers)</span></h2>
+                                </div>
+                                <svg class="toggle-chevron w-4 h-4 text-orange-300 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            <div id="flippity-content" class="w-full flex flex-col transition-all duration-200">
+                                <hr class="w-full border-orange-400/30 my-2" />
+                                <div id="flippity-buttons-container" class="flex flex-wrap justify-center gap-2 w-full">
+                                    <script>
+                                        for(let i=1; i<=12; i++) {
+                                            document.write(`<button data-key="flippity${i}" class="fl-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-orange-500 text-white hover:bg-orange-400 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-orange-100 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg><span>Flippity ${i}</span></button>`);
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Wordwall Section -->
+                        <div draggable="true" data-section-id="wordwall" data-section-title="Wordwall" data-section-use="interactive vocabulary matching games" class="draggable-section flex flex-col items-center w-full border border-blue-400/60 rounded-xl p-3 bg-blue-950/10">
+                            <div class="flex justify-between items-center w-full cursor-pointer section-toggle" data-target="wordwall-content">
+                                <div class="flex items-center gap-2">
+                                    <span class="drag-handle cursor-grab active:cursor-grabbing text-blue-300/60 hover:text-blue-300" title="Drag to reorder">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
+                                    </span>
+                                    <h2 class="text-sm font-bold tracking-wider uppercase text-blue-300 flex items-center gap-2">Wordwall <span class="text-xs font-normal text-zinc-400 normal-case">(interactive word games)</span></h2>
+                                </div>
+                                <svg class="toggle-chevron w-4 h-4 text-blue-300 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            <div id="wordwall-content" class="w-full flex flex-col transition-all duration-200">
+                                <hr class="w-full border-blue-400/30 my-2" />
+                                <div id="wordwall-buttons-container" class="flex flex-wrap justify-center gap-2 w-full">
+                                    <script>
+                                        for(let i=1; i<=12; i++) {
+                                            document.write(`<button data-key="wordwall${i}" class="ww-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-blue-500 text-white hover:bg-blue-400 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-blue-100 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 10h16M10 4v16"/></svg><span>Wordwall ${i}</span></button>`);
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SageMath Section -->
+                        <div draggable="true" data-section-id="sagemath" data-section-title="SageMath" data-section-use="advanced algebraic computations python" class="draggable-section flex flex-col items-center w-full border border-rose-500/60 rounded-xl p-3 bg-rose-950/10">
+                            <div class="flex justify-between items-center w-full cursor-pointer section-toggle" data-target="sagemath-content">
+                                <div class="flex items-center gap-2">
+                                    <span class="drag-handle cursor-grab active:cursor-grabbing text-rose-400/60 hover:text-rose-400" title="Drag to reorder">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
+                                    </span>
+                                    <h2 class="text-sm font-bold tracking-wider uppercase text-rose-400 flex items-center gap-2">SageMath <span class="text-xs font-normal text-zinc-400 normal-case">(advanced math software)</span></h2>
+                                </div>
+                                <svg class="toggle-chevron w-4 h-4 text-rose-400 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            <div id="sagemath-content" class="w-full flex flex-col transition-all duration-200">
+                                <hr class="w-full border-rose-500/30 my-2" />
+                                <div id="sagemath-buttons-container" class="flex flex-wrap justify-center gap-2 w-full">
+                                    <script>
+                                        for(let i=1; i<=12; i++) {
+                                            document.write(`<button data-key="sagemath${i}" class="sm-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-rose-600 text-white hover:bg-rose-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-rose-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg><span>SageMath ${i}</span></button>`);
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BookWidgets Section -->
+                        <div draggable="true" data-section-id="bookwidgets" data-section-title="BookWidgets" data-section-use="digital worksheets quizzes exercises" class="draggable-section flex flex-col items-center w-full border border-teal-400/60 rounded-xl p-3 bg-teal-950/10">
+                            <div class="flex justify-between items-center w-full cursor-pointer section-toggle" data-target="bookwidgets-content">
+                                <div class="flex items-center gap-2">
+                                    <span class="drag-handle cursor-grab active:cursor-grabbing text-teal-300/60 hover:text-teal-300" title="Drag to reorder">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
+                                    </span>
+                                    <h2 class="text-sm font-bold tracking-wider uppercase text-teal-300 flex items-center gap-2">BookWidgets <span class="text-xs font-normal text-zinc-400 normal-case">(digital course widgets)</span></h2>
+                                </div>
+                                <svg class="toggle-chevron w-4 h-4 text-teal-300 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            <div id="bookwidgets-content" class="w-full flex flex-col transition-all duration-200">
+                                <hr class="w-full border-teal-400/30 my-2" />
+                                <div id="bookwidgets-buttons-container" class="flex flex-wrap justify-center gap-2 w-full">
+                                    <script>
+                                        for(let i=1; i<=12; i++) {
+                                            document.write(`<button data-key="bookwidgets${i}" class="bw-btn inline-flex items-center justify-center rounded-xl text-xs font-medium bg-teal-600 text-white hover:bg-teal-500 h-8 px-2 transition cursor-pointer gap-1"><svg class="w-3.5 h-3.5 text-teal-100 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg><span>BookWidgets ${i}</span></button>`);
+                                        }
+                                    </script>
                                 </div>
                             </div>
                         </div>
@@ -343,32 +550,19 @@
         </div>
 
     </div>
+
     <!-- Floating Control Panel -->
     <div class="absolute right-5 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-50 bg-black/40 backdrop-blur-md p-2 rounded-xl border border-white/10 shadow-lg">
-        <button id="btn-font" title="Cycle Font & Text Color" class="w-10 h-10 flex items-center justify-center bg-zinc-800/80 hover:bg-zinc-700 rounded-lg transition text-white font-bold text-sm cursor-pointer">
-            Aa
-        </button>
-        <button id="btn-notes" title="Quick Notes" class="w-10 h-10 flex items-center justify-center bg-zinc-800/80 hover:bg-zinc-700 rounded-lg transition text-white cursor-pointer">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"/></svg>
-        </button>
-        <button id="btn-heart" title="Favorite" class="w-10 h-10 flex items-center justify-center bg-zinc-800/80 hover:bg-zinc-700 rounded-lg transition text-white cursor-pointer">
-            <svg id="heart-icon" class="w-5 h-5 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg>
-        </button>
-        <button id="btn-fullscreen" title="Toggle Fullscreen" class="w-10 h-10 flex items-center justify-center bg-zinc-800/80 hover:bg-zinc-700 rounded-lg transition text-white cursor-pointer">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg>
-        </button>
-        <button id="btn-maximize" title="Compact / Expand View" class="w-10 h-10 flex items-center justify-center bg-zinc-800/80 hover:bg-zinc-700 rounded-lg transition text-white cursor-pointer">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M15 15v4.5m0-4.5h4.5m0 4.5l-5.25-5.25"/></svg>
-        </button>
-        <button id="btn-themes" title="Customize Themes" class="w-10 h-10 flex items-center justify-center bg-zinc-800/80 hover:bg-zinc-700 rounded-lg transition text-white cursor-pointer">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-        </button>
-        <button id="btn-settings" title="Clock Options" class="w-10 h-10 flex items-center justify-center bg-zinc-800/80 hover:bg-zinc-700 rounded-lg transition text-white cursor-pointer">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        </button>
+        <button id="btn-font" title="Cycle Font & Text Color" class="w-10 h-10 flex items-center justify-center bg-zinc-800/80 hover:bg-zinc-700 rounded-lg transition text-white font-bold text-sm cursor-pointer">Aa</button>
+        <button id="btn-notes" title="Quick Notes" class="w-10 h-10 flex items-center justify-center bg-zinc-800/80 hover:bg-zinc-700 rounded-lg transition text-white cursor-pointer"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"/></svg></button>
+        <button id="btn-heart" title="Favorite" class="w-10 h-10 flex items-center justify-center bg-zinc-800/80 hover:bg-zinc-700 rounded-lg transition text-white cursor-pointer"><svg id="heart-icon" class="w-5 h-5 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg></button>
+        <button id="btn-fullscreen" title="Toggle Fullscreen" class="w-10 h-10 flex items-center justify-center bg-zinc-800/80 hover:bg-zinc-700 rounded-lg transition text-white cursor-pointer"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg></button>
+        <button id="btn-maximize" title="Compact / Expand View" class="w-10 h-10 flex items-center justify-center bg-zinc-800/80 hover:bg-zinc-700 rounded-lg transition text-white cursor-pointer"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M15 15v4.5m0-4.5h4.5m0 4.5l-5.25-5.25"/></svg></button>
+        <button id="btn-themes" title="Customize Themes" class="w-10 h-10 flex items-center justify-center bg-zinc-800/80 hover:bg-zinc-700 rounded-lg transition text-white cursor-pointer"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg></button>
+        <button id="btn-settings" title="Clock Options" class="w-10 h-10 flex items-center justify-center bg-zinc-800/80 hover:bg-zinc-700 rounded-lg transition text-white cursor-pointer"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></button>
     </div>
 
-    <!-- Calendar Modal -->
+    <!-- Modals -->
     <div id="calendar-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50">
         <div class="bg-zinc-900 border border-zinc-700 p-6 rounded-2xl w-80 shadow-2xl flex flex-col gap-4 text-white">
             <div class="flex justify-between items-center border-b border-zinc-800 pb-2">
@@ -383,13 +577,10 @@
             <div class="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-zinc-400 mb-1">
                 <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
             </div>
-            <div id="cal-grid" class="grid grid-cols-7 gap-1 text-center text-sm">
-                <!-- Days injected via JS -->
-            </div>
+            <div id="cal-grid" class="grid grid-cols-7 gap-1 text-center text-sm"></div>
         </div>
     </div>
 
-    <!-- Notes Modal -->
     <div id="notes-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50">
         <div class="bg-zinc-900 border border-zinc-700 p-6 rounded-2xl w-80 shadow-2xl flex flex-col gap-4 text-white">
             <div class="flex justify-between items-center border-b border-zinc-800 pb-2">
@@ -400,7 +591,6 @@
         </div>
     </div>
 
-    <!-- Themes Modal -->
     <div id="themes-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50">
         <div class="bg-zinc-900 border border-zinc-700 p-6 rounded-2xl w-80 shadow-2xl flex flex-col gap-4 text-white max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b border-zinc-800 pb-2">
@@ -437,7 +627,6 @@
         </div>
     </div>
 
-    <!-- Clock Options Modal -->
     <div id="settings-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50">
         <div class="bg-zinc-900 border border-zinc-700 p-6 rounded-2xl w-80 shadow-2xl flex flex-col gap-4 text-white">
             <div class="flex justify-between items-center border-b border-zinc-800 pb-2">
@@ -464,114 +653,24 @@
         </div>
     </div>
 
-    <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed bottom-5 right-5 flex flex-col gap-2 z-50"></div>
 
     <script>
-        // Preset Configurations for Button Links (1 to 12 for all sections)
-        const LINK_PRESETS = {
-            decimalhero1: { url: "https://decimalhero.one/", label: "DecimalHero 1" },
-            decimalhero2: { url: "https://decimalhero.two/", label: "DecimalHero 2" },
-            decimalhero3: { url: "https://decimalhero.three/", label: "DecimalHero 3" },
-            decimalhero4: { url: "https://decimalhero.four/", label: "DecimalHero 4" },
-            decimalhero5: { url: "https://decimalhero.five/", label: "DecimalHero 5" },
-            decimalhero6: { url: "https://decimalhero.six/", label: "DecimalHero 6" },
-            decimalhero7: { url: "https://decimalhero.seven/", label: "DecimalHero 7" },
-            decimalhero8: { url: "https://decimalhero.eight/", label: "DecimalHero 8" },
-            decimalhero9: { url: "https://decimalhero.nine/", label: "DecimalHero 9" },
-            decimalhero10: { url: "https://decimalhero.ten/", label: "DecimalHero 10" },
-            decimalhero11: { url: "https://decimalhero.eleven/", label: "DecimalHero 11" },
-            decimalhero12: { url: "https://decimalhero.twelve/", label: "DecimalHero 12" },
-            
-            mathalley1: { url: "https://mathalley.one/", label: "Mathalley 1" },
-            mathalley2: { url: "https://mathalley.two/", label: "Mathalley 2" },
-            mathalley3: { url: "https://mathalley.three/", label: "Mathalley 3" },
-            mathalley4: { url: "https://mathalley.four/", label: "Mathalley 4" },
-            mathalley5: { url: "https://mathalley.five/", label: "Mathalley 5" },
-            mathalley6: { url: "https://mathalley.six/", label: "Mathalley 6" },
-            mathalley7: { url: "https://mathalley.seven/", label: "Mathalley 7" },
-            mathalley8: { url: "https://mathalley.eight/", label: "Mathalley 8" },
-            mathalley9: { url: "https://mathalley.nine/", label: "Mathalley 9" },
-            mathalley10: { url: "https://mathalley.ten/", label: "Mathalley 10" },
-            mathalley11: { url: "https://mathalley.eleven/", label: "Mathalley 11" },
-            mathalley12: { url: "https://mathalley.twelve/", label: "Mathalley 12" },
+        const LINK_PRESETS = {};
+        const sectionsList = ['decimalhero', 'mathalley', 'thatquiz', 'mathigon', 'polypad', 'topmarks', 'wyzant', 'smartwork', 'edfinity', 'decktoys', 'splashlearn', 'plotly', 'math3d', 'excalidraw', 'flippity', 'wordwall', 'sagemath', 'bookwidgets'];
+        sectionsList.forEach(sec => {
+            for(let i=1; i<=12; i++) {
+                LINK_PRESETS[`${sec}${i}`] = { url: `https://${sec}${i}.com/`, label: `${sec.charAt(0).toUpperCase() + sec.slice(1)} ${i}` };
+            }
+        });
 
-            thatquiz1: { url: "https://thatquiz.one/", label: "ThatQuiz 1" },
-            thatquiz2: { url: "https://thatquiz.two/", label: "ThatQuiz 2" },
-            thatquiz3: { url: "https://thatquiz.three/", label: "ThatQuiz 3" },
-            thatquiz4: { url: "https://thatquiz.four/", label: "ThatQuiz 4" },
-            thatquiz5: { url: "https://thatquiz.five/", label: "ThatQuiz 5" },
-            thatquiz6: { url: "https://thatquiz.six/", label: "ThatQuiz 6" },
-            thatquiz7: { url: "https://thatquiz.seven/", label: "ThatQuiz 7" },
-            thatquiz8: { url: "https://thatquiz.eight/", label: "ThatQuiz 8" },
-            thatquiz9: { url: "https://thatquiz.nine/", label: "ThatQuiz 9" },
-            thatquiz10: { url: "https://thatquiz.ten/", label: "ThatQuiz 10" },
-            thatquiz11: { url: "https://thatquiz.eleven/", label: "ThatQuiz 11" },
-            thatquiz12: { url: "https://thatquiz.twelve/", label: "ThatQuiz 12" },
-
-            mathigon1: { url: "https://mathigon.one/", label: "Mathigon 1" },
-            mathigon2: { url: "https://mathigon.two/", label: "Mathigon 2" },
-            mathigon3: { url: "https://mathigon.three/", label: "Mathigon 3" },
-            mathigon4: { url: "https://mathigon.four/", label: "Mathigon 4" },
-            mathigon5: { url: "https://mathigon.five/", label: "Mathigon 5" },
-            mathigon6: { url: "https://mathigon.six/", label: "Mathigon 6" },
-            mathigon7: { url: "https://mathigon.seven/", label: "Mathigon 7" },
-            mathigon8: { url: "https://mathigon.eight/", label: "Mathigon 8" },
-            mathigon9: { url: "https://mathigon.nine/", label: "Mathigon 9" },
-            mathigon10: { url: "https://mathigon.ten/", label: "Mathigon 10" },
-            mathigon11: { url: "https://mathigon.eleven/", label: "Mathigon 11" },
-            mathigon12: { url: "https://mathigon.twelve/", label: "Mathigon 12" },
-
-            polypad1: { url: "https://polypad.one/", label: "Polypad 1" },
-            polypad2: { url: "https://polypad.two/", label: "Polypad 2" },
-            polypad3: { url: "https://polypad.three/", label: "Polypad 3" },
-            polypad4: { url: "https://polypad.four/", label: "Polypad 4" },
-            polypad5: { url: "https://polypad.five/", label: "Polypad 5" },
-            polypad6: { url: "https://polypad.six/", label: "Polypad 6" },
-            polypad7: { url: "https://polypad.seven/", label: "Polypad 7" },
-            polypad8: { url: "https://polypad.eight/", label: "Polypad 8" },
-            polypad9: { url: "https://polypad.nine/", label: "Polypad 9" },
-            polypad10: { url: "https://polypad.ten/", label: "Polypad 10" },
-            polypad11: { url: "https://polypad.eleven/", label: "Polypad 11" },
-            polypad12: { url: "https://polypad.twelve/", label: "Polypad 12" },
-
-            topmarks1: { url: "https://topmarks1.com/", label: "Topmarks 1" },
-            topmarks2: { url: "https://topmarks2.com/", label: "Topmarks 2" },
-            topmarks3: { url: "https://topmarks3.com/", label: "Topmarks 3" },
-            topmarks4: { url: "https://topmarks4.com/", label: "Topmarks 4" },
-            topmarks5: { url: "https://topmarks5.com/", label: "Topmarks 5" },
-            topmarks6: { url: "https://topmarks6.com/", label: "Topmarks 6" },
-            topmarks7: { url: "https://topmarks7.com/", label: "Topmarks 7" },
-            topmarks8: { url: "https://topmarks8.com/", label: "Topmarks 8" },
-            topmarks9: { url: "https://topmarks9.com/", label: "Topmarks 9" },
-            topmarks10: { url: "https://topmarks10.com/", label: "Topmarks 10" },
-            topmarks11: { url: "https://topmarks11.com/", label: "Topmarks 11" },
-            topmarks12: { url: "https://topmarks12.com/", label: "Topmarks 12" },
-
-            wyzant1: { url: "https://wyzant1.com/", label: "Wyzant 1" },
-            wyzant2: { url: "https://wyzant2.com/", label: "Wyzant 2" },
-            wyzant3: { url: "https://wyzant3.com/", label: "Wyzant 3" },
-            wyzant4: { url: "https://wyzant4.com/", label: "Wyzant 4" },
-            wyzant5: { url: "https://wyzant5.com/", label: "Wyzant 5" },
-            wyzant6: { url: "https://wyzant6.com/", label: "Wyzant 6" },
-            wyzant7: { url: "https://wyzant7.com/", label: "Wyzant 7" },
-            wyzant8: { url: "https://wyzant8.com/", label: "Wyzant 8" },
-            wyzant9: { url: "https://wyzant9.com/", label: "Wyzant 9" },
-            wyzant10: { url: "https://wyzant10.com/", label: "Wyzant 10" },
-            wyzant11: { url: "https://wyzant11.com/", label: "Wyzant 11" },
-            wyzant12: { url: "https://wyzant12.com/", label: "Wyzant 12" }
-        };
-
-        // Escape key fast triple press panic redirect listener
         let escapePressCount = 0;
         let escapeTimer = null;
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 escapePressCount++;
                 if (escapePressCount === 1) {
-                    escapeTimer = setTimeout(() => {
-                        escapePressCount = 0;
-                    }, 800);
+                    escapeTimer = setTimeout(() => { escapePressCount = 0; }, 800);
                 } else if (escapePressCount === 3) {
                     clearTimeout(escapeTimer);
                     window.location.replace("https://launchpad.classlink.com/login");
@@ -614,9 +713,7 @@
                     try {
                         const tzString = now.toLocaleString('en-US', { timeZone: tz });
                         targetDate = new Date(tzString);
-                    } catch(e) {
-                        targetDate = now;
-                    }
+                    } catch(e) { targetDate = now; }
                 }
 
                 let h = targetDate.getHours();
@@ -625,7 +722,6 @@
                 let period = "";
 
                 const use12 = opt12hr ? opt12hr.checked : true;
-
                 if (use12) {
                     period = h >= 12 ? 'PM' : 'AM';
                     h = h % 12;
@@ -650,9 +746,7 @@
                     try {
                         const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
                         dateDisplayEl.textContent = targetDate.toLocaleDateString('en-US', options);
-                    } catch(err) {
-                        dateDisplayEl.textContent = targetDate.toDateString();
-                    }
+                    } catch(err) { dateDisplayEl.textContent = targetDate.toDateString(); }
                 }
 
                 if (optTabSeconds && optTabSeconds.checked) {
@@ -682,9 +776,7 @@
                 if (savedOrder && Array.isArray(savedOrder) && sectionsContainer) {
                     savedOrder.forEach(id => {
                         const section = sectionsContainer.querySelector(`[data-section-id="${id}"]`);
-                        if (section) {
-                            sectionsContainer.appendChild(section);
-                        }
+                        if (section) sectionsContainer.appendChild(section);
                     });
                 }
             }
@@ -699,11 +791,7 @@
             if (sectionsContainer) {
                 sectionsContainer.querySelectorAll('.draggable-section').forEach(section => {
                     section.addEventListener('dragstart', (e) => {
-                        if (e.target.closest('button')) {
-                            e.preventDefault();
-                            return;
-                        }
-
+                        if (e.target.closest('button')) { e.preventDefault(); return; }
                         draggedSection = section;
                         const title = section.getAttribute('data-section-title') || 'Section';
                         const rect = section.getBoundingClientRect();
@@ -741,7 +829,6 @@
                 sectionsContainer.addEventListener('dragover', (e) => {
                     e.preventDefault();
                     if (!draggedSection || !placeholder) return;
-
                     const afterElement = getDragAfterElement(sectionsContainer, e.clientY);
                     if (afterElement == null) {
                         sectionsContainer.appendChild(placeholder);
@@ -766,7 +853,6 @@
 
             function getDragAfterElement(container, y) {
                 const draggableElements = [...container.querySelectorAll('.draggable-section:not(.dragging)')];
-
                 return draggableElements.reduce((closest, child) => {
                     const box = child.getBoundingClientRect();
                     const offset = y - box.top - box.height / 2;
@@ -778,10 +864,34 @@
                 }, { offset: Number.NEGATIVE_INFINITY }).element;
             }
 
+            // Section Search Functionality
+            const searchInput = document.getElementById('section-search-input');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase().trim();
+                    const sections = sectionsContainer.querySelectorAll('.draggable-section');
+
+                    sections.forEach(sec => {
+                        const title = (sec.getAttribute('data-section-title') || '').toLowerCase();
+                        const use = (sec.getAttribute('data-section-use') || '').toLowerCase();
+                        
+                        if (!query || title.includes(query) || use.includes(query)) {
+                            sec.style.display = '';
+                            if (query && (title.includes(query) || use.includes(query))) {
+                                sec.classList.add('highlight-pulse');
+                                sec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                setTimeout(() => sec.classList.remove('highlight-pulse'), 1500);
+                            }
+                        } else {
+                            sec.style.display = 'none';
+                        }
+                    });
+                });
+            }
+
             document.querySelectorAll('.section-toggle').forEach(header => {
                 header.addEventListener('click', (e) => {
                     if (e.target.closest('.drag-handle')) return;
-
                     const targetId = header.getAttribute('data-target');
                     const content = document.getElementById(targetId);
                     const icon = header.querySelector('.toggle-chevron');
@@ -811,22 +921,18 @@
                 const firstDay = new Date(year, month, 1).getDay();
                 const daysInMonth = new Date(year, month + 1, 0).getDate();
                 const today = new Date();
-
                 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                 calMonthYear.textContent = `${monthNames[month]} ${year}`;
-
                 calGrid.innerHTML = "";
 
                 for (let i = 0; i < firstDay; i++) {
-                    const emptyCell = document.createElement('div');
-                    calGrid.appendChild(emptyCell);
+                    calGrid.appendChild(document.createElement('div'));
                 }
 
                 for (let day = 1; day <= daysInMonth; day++) {
                     const dayCell = document.createElement('div');
                     dayCell.textContent = day;
                     dayCell.className = "py-1.5 rounded-lg text-sm transition font-medium flex items-center justify-center";
-
                     const isToday = (day === today.getDate() && month === today.getMonth() && year === today.getFullYear());
                     if (isToday) {
                         dayCell.classList.add('bg-blue-600', 'text-white', 'font-bold');
@@ -848,18 +954,13 @@
             }
 
             if (closeCalendar && calendarModal) {
-                closeCalendar.addEventListener('click', () => {
-                    calendarModal.classList.replace('flex', 'hidden');
-                });
+                closeCalendar.addEventListener('click', () => calendarModal.classList.replace('flex', 'hidden'));
             }
 
             if (calPrev) {
                 calPrev.addEventListener('click', () => {
                     calMonth--;
-                    if (calMonth < 0) {
-                        calMonth = 11;
-                        calYear--;
-                    }
+                    if (calMonth < 0) { calMonth = 11; calYear--; }
                     renderCalendar(calYear, calMonth);
                 });
             }
@@ -867,10 +968,7 @@
             if (calNext) {
                 calNext.addEventListener('click', () => {
                     calMonth++;
-                    if (calMonth > 11) {
-                        calMonth = 0;
-                        calYear++;
-                    }
+                    if (calMonth > 11) { calMonth = 0; calYear++; }
                     renderCalendar(calYear, calMonth);
                 });
             }
@@ -905,28 +1003,21 @@
                 btnFont.addEventListener('click', () => {
                     fontIndex = (fontIndex + 1) % fonts.length;
                     textColorIndex = (textColorIndex + 1) % textColors.length;
-
-                    const selectedFont = fonts[fontIndex];
-                    const selectedColor = textColors[textColorIndex];
-
-                    document.documentElement.style.setProperty('--custom-font', selectedFont.val);
-                    document.documentElement.style.setProperty('--custom-text', selectedColor.val);
-
-                    showToast("Customized Style", `Font: ${selectedFont.name} | Color: ${selectedColor.name}`);
+                    document.documentElement.style.setProperty('--custom-font', fonts[fontIndex].val);
+                    document.documentElement.style.setProperty('--custom-text', textColors[textColorIndex].val);
+                    showToast("Customized Style", `Font: ${fonts[fontIndex].name} | Color: ${textColors[textColorIndex].name}`);
                 });
             }
 
             let swInterval = null;
             let swSeconds = 0;
             let swRunning = false;
-
             const clockView = document.getElementById('clock-view');
             const stopwatchView = document.getElementById('stopwatch-view');
             const swMain = document.getElementById('sw-main');
             const swMs = document.getElementById('sw-ms');
             const swStart = document.getElementById('sw-start');
             const swReset = document.getElementById('sw-reset');
-
             const toggleSwBtn = document.getElementById('toggle-stopwatch-mode');
             const toggleClockBtn = document.getElementById('toggle-clock-mode');
 
@@ -989,7 +1080,6 @@
 
             const notesModal = document.getElementById('notes-modal');
             const quickNotesArea = document.getElementById('quick-notes-area');
-            
             if (quickNotesArea && localStorage.getItem('dashboard_quick_notes')) {
                 quickNotesArea.value = localStorage.getItem('dashboard_quick_notes');
             }
@@ -1001,12 +1091,8 @@
 
             const btnNotes = document.getElementById('btn-notes');
             const closeNotes = document.getElementById('close-notes-modal');
-            if (btnNotes && notesModal) {
-                btnNotes.addEventListener('click', () => notesModal.classList.replace('hidden', 'flex'));
-            }
-            if (closeNotes && notesModal) {
-                closeNotes.addEventListener('click', () => notesModal.classList.replace('flex', 'hidden'));
-            }
+            if (btnNotes && notesModal) btnNotes.addEventListener('click', () => notesModal.classList.replace('hidden', 'flex'));
+            if (closeNotes && notesModal) closeNotes.addEventListener('click', () => notesModal.classList.replace('flex', 'hidden'));
 
             const timeAmpmEl = document.getElementById('am-pm-trigger');
             if (timeAmpmEl) {
@@ -1075,24 +1161,15 @@
 
             const themesModal = document.getElementById('themes-modal');
             const settingsModal = document.getElementById('settings-modal');
-
             const btnThemes = document.getElementById('btn-themes');
-            if (btnThemes && themesModal) {
-                btnThemes.addEventListener('click', () => themesModal.classList.replace('hidden', 'flex'));
-            }
+            if (btnThemes && themesModal) btnThemes.addEventListener('click', () => themesModal.classList.replace('hidden', 'flex'));
             const closeThemes = document.getElementById('close-themes-modal');
-            if (closeThemes && themesModal) {
-                closeThemes.addEventListener('click', () => themesModal.classList.replace('flex', 'hidden'));
-            }
+            if (closeThemes && themesModal) closeThemes.addEventListener('click', () => themesModal.classList.replace('flex', 'hidden'));
 
             const btnSettings = document.getElementById('btn-settings');
-            if (btnSettings && settingsModal) {
-                btnSettings.addEventListener('click', () => settingsModal.classList.replace('hidden', 'flex'));
-            }
+            if (btnSettings && settingsModal) btnSettings.addEventListener('click', () => settingsModal.classList.replace('hidden', 'flex'));
             const closeSettings = document.getElementById('close-settings-modal');
-            if (closeSettings && settingsModal) {
-                closeSettings.addEventListener('click', () => settingsModal.classList.replace('flex', 'hidden'));
-            }
+            if (closeSettings && settingsModal) closeSettings.addEventListener('click', () => settingsModal.classList.replace('flex', 'hidden'));
 
             const pickerBg = document.getElementById('picker-bg');
             const pickerText = document.getElementById('picker-text');
@@ -1116,7 +1193,6 @@
             function triggerEmbedder() {
                 let urlInput = document.getElementById("url-target");
                 if (!urlInput) return;
-                
                 let url = urlInput.dataset.actualUrl || urlInput.value.trim();
                 if (!url) { showToast("Error", "URL cannot be empty."); return; }
                 showToast("Page opened!", "The page has been opened in a new about:blank tab.");
@@ -1134,11 +1210,7 @@
             }
 
             const createBtn = document.getElementById('create-btn');
-            if (createBtn) {
-                createBtn.addEventListener('click', () => {
-                    triggerEmbedder();
-                });
-            }
+            if (createBtn) createBtn.addEventListener('click', () => triggerEmbedder());
 
             let activeTypeTimer = null;
             function typeWriter(inputElement, text, speed = 12, callback) {
@@ -1158,7 +1230,7 @@
                 typing();
             }
 
-            document.querySelectorAll('.dh-btn, .ma-btn, .tq-btn, .mg-btn, .pp-btn, .tm-btn, .wz-btn').forEach(btn => {
+            document.querySelectorAll('.dh-btn, .ma-btn, .tq-btn, .mg-btn, .pp-btn, .tm-btn, .wz-btn, .sw-sec-btn, .ef-btn, .dt-btn, .sl-btn, .pl-btn, .m3d-btn, .ex-btn, .fl-btn, .ww-btn, .sm-btn, .bw-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const key = btn.getAttribute('data-key');
                     const urlInput = document.getElementById("url-target");
@@ -1174,9 +1246,7 @@
 
             const urlTarget = document.getElementById('url-target');
             if (urlTarget) {
-                urlTarget.addEventListener('input', () => {
-                    delete urlTarget.dataset.actualUrl;
-                });
+                urlTarget.addEventListener('input', () => { delete urlTarget.dataset.actualUrl; });
                 urlTarget.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter') {
                         e.preventDefault();
